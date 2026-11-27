@@ -131,6 +131,14 @@ describe('diagnostics and validation are read-only', () => {
     expect(diags.find((d) => d.code === 'cycle')?.severity).toBe('info');
   });
 
+  it('summarizes uninitialized slots once per object', () => {
+    const s = new Session();
+    s.run({ type: 'createObject', kind: 'array', position: { x: 0, y: 0 }, options: { length: 5 } });
+    const found = runDiagnostics(s.doc).filter((d) => d.code === 'uninitialized-field');
+    expect(found).toHaveLength(1);
+    expect(found[0].message).toContain('5 uninitialized slots');
+  });
+
   it('INVARIANT: unreachable objects are not automatically deleted', () => {
     const s = new Session();
     const [a, b] = s.list([1, 2]);

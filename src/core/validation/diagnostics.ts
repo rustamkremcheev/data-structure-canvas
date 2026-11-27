@@ -94,15 +94,25 @@ export function runDiagnostics(doc: DocumentState): Diagnostic[] {
     }
   }
 
-  // Null and uninitialized fields.
+  // Null and uninitialized fields (uninitialized ones are summarized per object).
   for (const o of Object.values(doc.objects)) {
+    const uninit: string[] = [];
     for (const s of o.slots) {
       const where = describeRefSource(doc, { kind: 'slot', objectId: o.id, slotId: s.id });
       if (s.value.kind === 'null' && s.kind !== 'primitive') {
         push({ code: 'null-reference', severity: 'info', message: `${where} is null`, note: 'Often intentional, e.g. the end of a list.', elementIds: [o.id] });
       } else if (s.value.kind === 'uninitialized') {
-        push({ code: 'uninitialized-field', severity: 'warning', message: `${where} is uninitialized`, elementIds: [o.id] });
+        uninit.push(o.kind === 'array' || o.kind === 'matrix' || o.kind === 'container' ? `[${s.name}]` : s.name);
       }
+    }
+    if (uninit.length) {
+      const shown = uninit.length > 6 ? `${uninit.slice(0, 6).join(', ')}, …` : uninit.join(', ');
+      push({
+        code: 'uninitialized-field',
+        severity: 'warning',
+        message: `${objectLabel(doc, o.id)} has ${uninit.length} uninitialized ${uninit.length === 1 ? 'slot' : 'slots'}: ${shown}`,
+        elementIds: [o.id],
+      });
     }
   }
   for (const v of Object.values(doc.variables)) {
