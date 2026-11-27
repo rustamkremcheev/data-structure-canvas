@@ -100,7 +100,10 @@ export function Canvas() {
   const edges: Edge[] = useMemo(() => buildEdges(doc, new Set(selectedEdgeIds)), [doc, selectedEdgeIds]);
 
   useEffect(() => {
+    const scheduledAt = useProjectStore.getState().revision;
     const t = setTimeout(() => {
+      // Never move the viewport under a user who has already started working.
+      if (useProjectStore.getState().revision !== scheduledAt) return;
       if (Object.keys(useProjectStore.getState().doc.objects).length || Object.keys(useProjectStore.getState().doc.variables).length) {
         rf.fitView({ padding: 0.2, maxZoom: 1.2, duration: 0 });
       } else rf.setViewport({ x: 0, y: 0, zoom: 1 });
