@@ -1,0 +1,98 @@
+@import 'tailwindcss';
+@import '@xyflow/react/dist/style.css';
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: #fff;
+  color: #1e293b;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* React Flow: keep it quiet and light */
+.react-flow__node {
+  font-family: var(--font-sans);
+}
+.react-flow__node.selected > .dc-node,
+.react-flow__node.selected > div > .dc-node {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+.react-flow__handle {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid #475569;
+  background: #fff;
+}
+.react-flow__handle.dc-handle-ref {
+  background: #fff;
+}
+.react-flow__handle:hover,
+.react-flow__handle.connectingfrom {
+  background: #c4b5fd;
+}
+.react-flow__handle.dc-target-handle {
+  opacity: 0;
+  pointer-events: none;
+}
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke-width: 3;
+}
+.react-flow__controls {
+  box-shadow: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.react-flow__controls-button {
+  border-bottom: 1px solid #f1f5f9;
+}
+.react-flow__minimap {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+.react-flow__selection {
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px dashed #8b5cf6;
+}
+.react-flow__attribution {
+  font-size: 9px;
+  opacity: 0.6;
+}
+.dc-tool-pencil .react-flow__pane,
+.dc-tool-pencil .react-flow__node {
+  cursor: crosshair !important;
+}
+.dc-tool-create .react-flow__pane {
+  cursor: copy;
+}
+.dc-tool-eraser .react-flow__pane,
+.dc-tool-eraser .react-flow__node {
+  cursor: cell !important;
+}
+.dc-tool-reference .react-flow__node {
+  cursor: pointer;
+}
+
+/* Scrollbars */
+.dc-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.dc-scroll::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 4px;
+}
+
+.dc-hatch {
+  background-image: repeating-linear-gradient(135deg, #fef3c7 0 4px, #fffbeb 4px 8px);
+}
